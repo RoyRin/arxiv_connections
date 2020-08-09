@@ -100,6 +100,7 @@ def plot_plotly_simple(G, original_name=None):
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
         d = G.get_edge_data(n1, n2)
+        # TODO - currently edge weights do not visualize. NEED TO FIX
         weight_text = d.get("weight", "N/A")
         edge_text.append(f"shared papers: {weight_text}")
 
@@ -143,13 +144,18 @@ def plot_plotly_simple(G, original_name=None):
     for _, adjacencies in enumerate(G.adjacency()):
         name, connections = adjacencies
         node_adjacencies.append(len(adjacencies[1]))
-
-        hover_text = f"{name}|"
+        hover_text = name
         if original_name and original_name in G.nodes:
             dist = shortest_path[original_name][name]
-            hover_text += f"to-origin: {dist}|"
+            hover_text += (f"<br>dist-to-origin : {dist}")
 
-        node_text.append(hover_text + f"#{len(connections)} papers")
+        hover_text += f"<br>Papers pulled: {len(connections)}"
+        neighbors = list(G.neighbors(name))
+        if neighbors:
+            hover_text += f"co-authors:"
+        for neighbor in neighbors:
+            hover_text += "<br>" + neighbor
+        node_text.append(hover_text)
 
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
