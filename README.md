@@ -21,8 +21,11 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
 
 ## How to Use:
 Once you have done the steps from 'How To Install', Now you can either run your own python package or use the CLI from terminal
-    - from terminal, run `arxiv-traverser --help` for an explanation of how to run things
-    - You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
+    - from terminal, 
+        - Quick-start example: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r test_data/dmitry_rinberg.csv`
+        - run `arxiv-traverser --help` for an explanation of how to run things
+    - From Jupyter:
+        - You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
         - To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
 
 # Need To-Do:
@@ -40,4 +43,3 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 `(In order to avoid bottlenecks)
 # Graphing To-Do:
 - Make the distance between nodes be porportional to the weight between them
-
