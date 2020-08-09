@@ -7,7 +7,6 @@ import pandas as pd
 import graphing
 import arxiv_traverser
 
-
 # TODO - save the authors and things optionally
 # TODO - save the plot optionally
 # TODO - using logging library
@@ -34,7 +33,7 @@ def cli(ctx):
 
 
 @cli.command(name="crawl-and-plot",
-               help="""crawl arxiv, create graph of co-authored connections""")
+             help="""crawl arxiv, create graph of co-authored connections""")
 @click.argument("original_author",
                 nargs=1,
                 default="Mr. Rogers",
@@ -62,15 +61,15 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv, debug_mode):
     if read_csv:
         articles = pd.read_csv(read_csv)
     else:
-        articles = arxiv_traverser.BFS_author_query(original_author=original_author,
-                                    max_search_results=5,
-                                    max_depth=2)
+        articles = arxiv_traverser.BFS_author_query(
+            original_author=original_author, max_search_results=5, max_depth=2)
     if save_csv:
         articles.to_csv(save_csv)
     # generate a graph of authors, where the weight is the number of papers shared
     G = arxiv_traverser.generate_author_graph(articles)
     #plot_weighted_graph(G)
     graphing.graph(G)
+
 
 def main():
     cli()

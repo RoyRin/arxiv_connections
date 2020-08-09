@@ -12,6 +12,7 @@ logger = logging.getLogger()
 # TODO : test discovery BFS Traversal
 # TODO : traverse people, but then in the final plot, only show people maximally X distance away
 
+
 def discovery_BFS_traversal(root, max_depth, next_traversal_f):
     """
     Traverse from a root BFS, 
@@ -38,8 +39,8 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
                 discovered.add(w)
 
         if timeToDepthIncrease == 0:
-            logger.debug("increase depth to ", depth + 1)
             depth += 1
+            logger.debug(f"increase depth to {depth}")
             timeToDepthIncrease = Q.qsize()
 
 
@@ -119,59 +120,3 @@ def generate_author_graph(all_articles):
             for j in range(i + 1, len(row.authors)):
                 _create_edge(row.authors[i], row.authors[j], G)
     return G
-
-
-'''
-# Plan:
-    #authors = author_search.authors
-    # step 1
-    # get all the arxiv articles (for a given authorname)
-    # compile a list of coauthors
-    #   for each coauthor,
-    #       get a list of arxiv articles
-    #       compile a list of coauthor'
-    #
-
-# Relevant Plotly code for making graphs:
-# https://plotly.com/python/network-graphs/
-
-
-def BFS_author_query(original_author):
-    """ BFS Traverse the papers to track the authors"""
-    authors = queue.Queue()
-    discovered = set()
-    discovered.add(original_author)
-    authors.put(original_author)
-    while not authors.empty() and depth <= max_depth:
-        author = authors.get()
-        if author in discovered:
-            continue
-
-        arxiv_articles = search(author)
-        unique_coauthors = get_unique_coauthors(arxiv_articles.authors)
-        for author in unique_coauthors:
-            if author not in discovered:
-                authors.put(author)
-                discovered.add(author)
-
-
-##
-def get_unique_coauthors(author, authors_lists):
-    """
-    Given a pandas series of lists of authors, 
-    return a set of unique co-authors 
-    """
-    unique_authors = set()
-    # Only consider authors that are directly co-authors with the original author
-    relevant_lists = [
-        author_list for author_list in authors_lists if author in author_list
-    ]
-
-    coauthored_articles = [
-        article for article in arxiv_articles if author in article['authors']
-    ]
-    for authors in coauthored_articles['authors']:
-        for author in authors:
-            unique_authors.add(author)
-    return unique_authors
-'''
