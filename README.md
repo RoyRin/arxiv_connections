@@ -12,6 +12,7 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
  and it would generate a report of where to look 
 
 ## How to install:
+
 1. `git clone git@github.com:RoyRin/arxiv_traverser.git` 
 2. Create a fresh python virtual environment. Which looks something like 
     - `python3.7 -m venv my_env37` or `virtualenv --python=/usr/bin/python3.7 my_env37`
@@ -21,32 +22,41 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
 
 ## How to Use:
 Once you have done the steps from 'How To Install', Now you can either run your own python package or use the CLI from terminal
-    - from terminal, 
-        - Quick-start example #1: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
-        - Quick-start example #2: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -s dmitry_rinberg.csv -d 3 -m 8 -D`
-        - run `arxiv-traverser --help` for an explanation of how to run things
-    - From Jupyter:
-        - You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
-        - To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
+
+**Quick-start from terminal:**
+
+* Quick-start example #1: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
+* Quick-start example #2: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -s dmitry_rinberg.csv -d 3 -m 8 -D`
+* run `arxiv-traverser --help` for an explanation of how to run things
+
+**Quick-start From Jupyter:**
+
+* You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
+* To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
 
 # Development
 ## For developers:
 Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/ and https://githooks.com/
+
 1. To set-up easy formatting practices (i.e yapf + stripping jupyter notebooks):
-    - run `ln -s ../../hooks/pre-commit.sh .git/hooks/pre-commit` from arxiv_traverser home
-`
+    * run `ln -s ../../hooks/pre-commit.sh .git/hooks/pre-commit` from arxiv_traverser home
+
+# To-Do list
 ## Need To-Do:
-- Add tests !
-- read through all the TODO comments, and actually fix them!
+
+* Add tests !
+* read through all the TODO comments, and actually fix them!
 
 ## Nice To-Do:
-- be able to create a metric between 2 different authors
-- Investigate ways to define a few metrics on a graph, then rank individuals
-- Generate reports on other academics, as a way to investigate who to look into next
-- Be able to process more information than just Co-authoring, when considering new academics (i.e. topics)
-- Add some images and put them in the git repo, for others to understand the tool better
 
-- To-Do define some kind of bottle-neck distance or distance about number of paths to get to another individual
+* be able to create a metric between 2 different authors
+* Investigate ways to define a few metrics on a graph, then rank individuals
+* Generate reports on other academics, as a way to investigate who to look into next
+* Be able to process more information than just Co-authoring, when considering new academics (i.e. topics)
+* Add some images and put them in the git repo, for others to understand the tool better
+
+* To-Do define some kind of bottle-neck distance or distance about number of paths to get to another individual
 `(In order to avoid bottlenecks)
+
 ## Graphing To-Do:
-- Make the distance between nodes be porportional to the weight between them
+* Make the distance between nodes be porportional to the weight between them
