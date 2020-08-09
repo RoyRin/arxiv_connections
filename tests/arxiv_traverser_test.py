@@ -33,7 +33,7 @@ class TestTask_Arxiv_Traverser(unittest.TestCase):
         def next_traversal_f(vertex, traversal_tracker): 
             traversal_tracker.append(vertex)
             return G.neighbors(vertex)
-        next_traversal_f_partially_applied = lambda vertex : next_traversal_f(vertex, traversal_tracker) 
+        next_traversal_f_partially_applied = lambda vertex,depth : next_traversal_f(vertex, traversal_tracker) 
         arxiv_traverser.discovery_BFS_traversal(root="A", max_depth=10,next_traversal_f = next_traversal_f_partially_applied)
         
         expected_options = (["A", "B", "C", "D", "E", "F", "G"], ["A", "C", "B", "D", "E", "F", "G"], ["A", "B", "C", "D", "F", "E", "G"], ["A", "C", "B", "D", "F", "E", "G"])
@@ -50,7 +50,7 @@ class TestTask_Arxiv_Traverser(unittest.TestCase):
         def next_traversal_f(vertex, traversal_tracker): 
             traversal_tracker.append(vertex)
             return G.neighbors(vertex)
-        next_traversal_f_partially_applied = lambda vertex : next_traversal_f(vertex, traversal_tracker) 
+        next_traversal_f_partially_applied = lambda vertex, depth: next_traversal_f(vertex, traversal_tracker) 
         arxiv_traverser.discovery_BFS_traversal(root="A", max_depth=3,next_traversal_f = next_traversal_f_partially_applied)
         
         expected_options = (["A", "B", "C", "D"], ["A", "C", "B", "D"])
