@@ -61,6 +61,15 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="""max-depth to traverse if searching arxiv""")
+@click.option(
+    "--halve-queries-per-graph-deepening",
+    "-h",
+    default=False,
+    show_default=True,
+    is_flag=True,
+    help=
+    "For each increase in graph-depth, shrink the number of queries to arxiv, by 1/2"
+)
 @click.option("--debug_mode",
               "-D",
               default=False,
@@ -69,7 +78,8 @@ def cli(ctx):
               help="set logging to debug level")
 @click.pass_context
 def crawl_and_plot(ctx, original_author, save_csv, read_csv,
-                   max_results_per_search, max_depth, debug_mode):
+                   max_results_per_search, max_depth,
+                   halve_queries_per_graph_deepening, debug_mode):
     if debug_mode:
         logger.setLevel(logging.DEBUG)
         for handler in logger.handlers:
@@ -81,6 +91,7 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv,
         articles = arxiv_traverser.BFS_author_query(
             original_author=original_author,
             max_search_results=max_results_per_search,
+            halve_queries_by_depth=halve_queries_per_graph_deepening,
             max_depth=max_depth)
         if save_csv:
             articles.to_csv(save_csv)

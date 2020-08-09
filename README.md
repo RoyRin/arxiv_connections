@@ -31,7 +31,8 @@ number of papers they have co-authored.
 For new author-investigations, you can scrape directly from arxiv. To make future investigations easier, you can
 save the articles discovered off arxiv to a CSV, and then read from it in future iterations of the investigation.
 
-
+Note: I do not recommend having 
+The number of queries is bounded at (max_queries)^(max_depth-1). So, make sure it's not too big...
 ### Quick-Start
 **Quick-start from terminal:**
 * Quick-start example #1 (from a file): `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`

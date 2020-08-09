@@ -31,7 +31,7 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
     while not Q.empty() and depth <= max_depth:
         v = Q.get()
         timeToDepthIncrease -= 1
-        adjacent_vs = next_traversal_f(v)
+        adjacent_vs = next_traversal_f(v, depth)
         for w in adjacent_vs:
             if w not in discovered:
                 Q.put(w)
@@ -50,11 +50,14 @@ def search(search_query, max_search_results=100):
     return df
 
 
-def BFS_author_query(original_author, max_search_results=10, max_depth=5):
+def BFS_author_query(original_author,
+                     max_search_results=10,
+                     halve_queries_by_depth=True,
+                     max_depth=5):
     """ Traverse the papers by coauthors and return a list of all the articles """
     original_author = original_author.lower()
 
-    def next_traversal_vertices(author, all_articles):
+    def next_traversal_vertices(author, depth, all_articles):
         """ 
         return list of things to bump onto the queue, to traversal 1 deeper level
         also also update all_articles while on the way 
@@ -62,7 +65,10 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
             all_articles = [df.DataFrame], this allows one to update it
         """
         # get arxiv articles for a specific search
-        arxiv_articles = search(author, max_search_results=max_search_results)
+
+        arxiv_articles = search(author,
+                                max_search_results=int(max_search_results *
+                                                       (1 / 2)**(depth - 1)))
         # return True if author is a coauthor of article
         is_coauthor = lambda row: any([
             author.lower() == article_author.lower()
@@ -78,6 +84,8 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
 
         # get a list of all the coauthors
         unique_coauthors = set()
+        if not len(coauthored_articles):
+            return []
         for author_list in coauthored_articles.authors:
             for author in author_list:
                 unique_coauthors.add(author.lower())
@@ -86,8 +94,8 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
 
     # partially apply next_traversal_verticies to only take author as an arg, but to update the all_articles
     all_articles = [pd.DataFrame()]
-    next_traversal_vertices_partially_applied = lambda author: next_traversal_vertices(
-        author, all_articles)
+    next_traversal_vertices_partially_applied = lambda author, depth: next_traversal_vertices(
+        author, depth, all_articles)
 
     discovery_BFS_traversal(
         original_author,
