@@ -21,13 +21,22 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
 3. `cd arxiv_traverser && poetry install arxiv_traverser`
 
 ## How to Use:
-Once you have done the steps from 'How To Install', Now you can either run your own python package or use the CLI from terminal
+Once you have done the steps from 'How To Install', Now you can either run your own python package or use the CLI from terminal.
 
+### High-level Description
+Generally, the current code will pull articles from Arxiv. It will generate nodes for each author of each article. It 
+will create edges between authors if they have co-authored something, with the edge weights proportional to the 
+number of papers they have co-authored.
+
+For new author-investigations, you can scrape directly from arxiv. To make future investigations easier, you can
+save the articles discovered off arxiv to a CSV, and then read from it in future iterations of the investigation.
+
+
+### Quick-Start
 **Quick-start from terminal:**
-
-* Quick-start example #1: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
-* Quick-start example #2: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -s dmitry_rinberg.csv -d 3 -m 8 -D`
-* run `arxiv-traverser --help` for an explanation of how to run things
+* Quick-start example #1 (from a file): `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
+* Quick-start example #2 (pull from arxiv): `arxiv-traverser crawl-and-plot 'dmitry rinberg' -s dmitry_rinberg_read.csv -d 3 -m 8 -D`
+* run `arxiv-traverser --help` for an explanation of the CLI's commands
 
 **Quick-start From Jupyter:**
 
@@ -35,6 +44,9 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 * To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
 
 # Development
+
+Note, this has been developed on Ubuntu 18.04.
+
 ## For developers:
 Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/ and https://githooks.com/
 
