@@ -64,7 +64,10 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
         # get arxiv articles for a specific search
         arxiv_articles = search(author, max_search_results=max_search_results)
         # return True if author is a coauthor of article
-        is_coauthor = lambda row: any([author.lower() == article_author.lower()for article_author in row.authors])
+        is_coauthor = lambda row: any([
+            author.lower() == article_author.lower()
+            for article_author in row.authors
+        ])
         # get df of coauthored articles
         coauthored_articles = arxiv_articles[arxiv_articles.apply(is_coauthor,
                                                                   axis=1)]
