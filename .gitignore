@@ -1,2 +1,4 @@
+*.csv
+*egg-info
 poetry.lock
 */__pycache__

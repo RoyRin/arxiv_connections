@@ -5,8 +5,6 @@ from collections import defaultdict
 import networkx as nx
 import logging
 
-# local files
-import graphing
 logger = logging.getLogger()
 
 # TODO : test discovery BFS Traversal
@@ -53,6 +51,7 @@ def search(search_query, max_search_results=10000):
 
 def BFS_author_query(original_author, max_search_results=10, max_depth=5):
     """ Traverse the papers by coauthors and return a list of all the articles """
+    original_author = original_author.lower()
     def next_traversal_vertices(author, all_articles):
         """ 
         return list of things to bump onto the queue, to traversal 1 deeper level
@@ -63,7 +62,7 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
         # get arxiv articles for a specific search
         arxiv_articles = search(author, max_search_results=max_search_results)
         # return True if author is a coauthor of article
-        is_coauthor = lambda row: author in row.authors
+        is_coauthor = lambda row: any([author.lower() == article_author.lower() for article_author in row.authors])
         # get df of coauthored articles
         coauthored_articles = arxiv_articles[arxiv_articles.apply(is_coauthor,
                                                                   axis=1)]
@@ -76,7 +75,7 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
         unique_coauthors = set()
         for author_list in coauthored_articles.authors:
             for author in author_list:
-                unique_coauthors.add(author)
+                unique_coauthors.add(author.lower())
 
         return unique_coauthors
 

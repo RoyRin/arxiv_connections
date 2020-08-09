@@ -21,15 +21,25 @@ def plot_weighted_graph(G):
 
     plt.show()
 
-
-def graph(G):
-    pos = nx.spring_layout(G)  # positions for all nodes
+def simple_plot(G):
+    #pos = nx.spring_layout(G)  # positions for all nodes
     nx.draw(G, with_labels=True, font_weight='bold')
-    plt.show()
 
+
+    
 
 # example for weighted graph drawing: https://networkx.github.io/documentation/stable/auto_examples/drawing/plot_weighted_graph.html
 
 # TODO : color the original author
 # TODO : put the original author in the center of the plot
-# TODO: explore plotly
+# TODO : explore plotly
+
+# plotly
+# https://plotly.com/python/network-graphs/
+
+
+
+
+def graph(G):
+    plot_weighted_graph(G)
+    plt.show()

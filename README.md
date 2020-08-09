@@ -13,3 +13,7 @@ sub-level goals:
 
 Things to look into: 
     Investigate ways to define a few metrics on a graph, then rank individuals
+
+
+TODO:
+1. Add tests

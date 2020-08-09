@@ -4,8 +4,7 @@ import click
 import logging
 import pandas as pd
 # locals
-import graphing
-import arxiv_traverser
+from arxiv_grapher import (graphing, arxiv_traverser)
 
 # TODO - save the authors and things optionally
 # TODO - save the plot optionally
@@ -39,7 +38,7 @@ def cli(ctx):
                 default="Mr. Rogers",
                 required=True)
 @click.option("--save-csv",
-              "-c",
+              "-s",
               default=None,
               show_default=True,
               required=False,
