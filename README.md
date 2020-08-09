@@ -1,6 +1,6 @@
 # Intro
-Arxiv-traverser is a python pkg + CLI to find academics based on closeness through 
-arxiv co-authorings.
+Arxiv-traverser is a python pkg + CLI to find academics related to other academics
+ based on closeness through arxiv co-authorings.
 
 
 ## High-level Goals:
@@ -17,13 +17,16 @@ arxiv co-authorings.
 4. Now you can either run your own python package or use the CLI from terminal
     - from terminal, run `arxiv-traverser --help` for an explanation of how to run things
 
-# To-Do goals
+# Need To-Do
+- Add tests !
 - read through all the TODO comments, and actually fix them!
+
+# Nice To-Do
 - be able to create a metric between 2 different authors
 - Generate reports on other academics, as a way to investigate where to continue next
-- Add tests !
+- Be able to process more information than just Co-authoring, when considering new academics 
 
 ## Things to look into: 
-    Investigate ways to define a few metrics on a graph, then rank individuals
+1. Investigate ways to define a few metrics on a graph, then rank individuals
 
 
