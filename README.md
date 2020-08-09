@@ -30,7 +30,10 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 
 # Development
 ## For developers:
-1. To set-up nice formatting: run `ln -s hooks/pre-commit.sh .git/hooks/pre-commit.sh`
+Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/
+1. To set-up easy formatting practices (i.e yapf + stripping jupyter notebooks):
+    - run `ln -s ../../hooks/pre-commit.sh .git/hooks/pre-commit` from arxiv_traverser home
+`
 ## Need To-Do:
 - Add tests !
 - read through all the TODO comments, and actually fix them!
