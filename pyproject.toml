@@ -8,7 +8,7 @@ packages = [
    ]
 
 [tool.poetry.scripts]
-arxiv-grapher = "arxiv_traverser.cli:main"
+arxiv-traverser = "arxiv_traverser.cli:main"
 
 
 [tool.poetry.dependencies]
