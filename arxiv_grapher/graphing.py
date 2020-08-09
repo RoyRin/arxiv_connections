@@ -5,6 +5,8 @@ import logging
 
 logger = logging.getLogger()
 
+# TODO - for each hover, show the distance to the original author
+
 
 def plot_weighted_graph(G):
     """Plot a weighted graph"""
@@ -22,13 +24,12 @@ def plot_weighted_graph(G):
 
     plt.show()
 
+
 def simple_plot(G):
     #pos = nx.spring_layout(G)  # positions for all nodes
     nx.draw(G, with_labels=True, font_weight='bold')
     plt.show()
 
-
-    
 
 # example for weighted graph drawing: https://networkx.github.io/documentation/stable/auto_examples/drawing/plot_weighted_graph.html
 
@@ -40,13 +41,14 @@ def simple_plot(G):
 # https://plotly.com/python/network-graphs/
 
 
-def plot_plotly_simple(G, original_name = None):
+def plot_plotly_simple(G, original_name=None):
     """
     https://plotly.com/python/plotly-fundamentals/    
     
     more relevant taken from : https://stackoverflow.com/questions/51410283/how-to-efficiently-create-interactive-directed-network-graphs-with-arrows-on-p
 
     """
+    shortest_path = dict(nx.all_pairs_shortest_path_length(G))
     pos = nx.spring_layout(G)
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
@@ -72,17 +74,18 @@ def plot_plotly_simple(G, original_name = None):
         edge_y.append(y0)
         edge_y.append(y1)
         edge_y.append(None)
-    
-    edge_trace = go.Scatter(
-    x=edge_x, y=edge_y,
-    line=dict(width=0.5, color='#888'),
-    hoverinfo='none',
-    mode='lines')
 
-        
+    edge_trace = go.Scatter(x=edge_x,
+                            y=edge_y,
+                            line=dict(width=0.5, color='#888'),
+                            hoverinfo='none',
+                            mode='lines')
+
     node_trace = go.Scatter(
-        x=node_x, y=node_y,
-        mode='markers',
+        x=node_x,
+        y=node_y,
+        mode="markers",
+        #mode="markers+text",
         hoverinfo='text',
         marker=dict(
             showscale=True,
@@ -94,46 +97,56 @@ def plot_plotly_simple(G, original_name = None):
             reversescale=True,
             color=[],
             size=10,
-            colorbar=dict(
-                thickness=15,
-                title='Node Connections',
-                xanchor='left',
-                titleside='right'
-            ),
+            colorbar=dict(thickness=15,
+                          title='Node Connections',
+                          xanchor='left',
+                          titleside='right'),
             line_width=2))
 
-    ''' Color nodes'''
+    node_trace_original = None
+    if original_name:
+        original_x, original_y = G.nodes[original_name]['pos']
+        node_trace_original = go.Scatter(
+            x=[original_x],
+            y=[original_y],
+            #mode = "markers",
+            mode="markers+text",
+            hoverinfo='text',
+            marker=dict(color=["Red"], size=9, line_width=2))
+
+    #Color nodes and add hover-text
     node_adjacencies = []
     node_text = []
     for _, adjacencies in enumerate(G.adjacency()):
         name, connections = adjacencies
         node_adjacencies.append(len(adjacencies[1]))
-        node_text.append(f"{name} : #{len(connections)} connections")
+
+        hover_text = f"{name}|"
+        if original_name:
+            dist = shortest_path[original_name][name]
+            hover_text += f"to-origin: {dist}|"
+
+        node_text.append(hover_text + f"#{len(connections)} papers")
 
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
-
-    fig = go.Figure(data=[edge_trace, node_trace],
-                layout=go.Layout(
-                    title='<br>Arxiv co-author exploration tracker ',
-                    titlefont_size=16,
-                    showlegend=True,
-                    #hovermode='closest',
-                    #mode="lines+markers+text",
-                    margin=dict(b=20,l=5,r=5,t=40),
-                    
-                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-                    )
-    fig.update_traces(textposition='top center')
-    #fig.update_layout(height=800, title_text='GDP and Life Expectancy (Americas, 2007) )
-
+    # Plot the nodes and edges, and if original name supplied, highlight the original name
+    data = [edge_trace, node_trace]
+    if node_trace_original:
+        data.append(node_trace_original)
+    fig = go.Figure(
+        data=data,
+        layout=go.Layout(
+            title='<br>Arxiv co-author exploration tracker ',
+            titlefont_size=16,
+            showlegend=True,
+            #hovermode='closest',
+            margin=dict(b=20, l=5, r=5, t=40),
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
     fig.show()
 
 
-
-def graph(G, original_name = None):
+def graph(G, original_name=None):
     #plot_weighted_graph(G)
-    plot_plotly(G, original_name)
-
-    
+    plot_plotly_simple(G, original_name)

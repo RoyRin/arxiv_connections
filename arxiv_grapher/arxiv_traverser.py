@@ -43,7 +43,7 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
             timeToDepthIncrease = Q.qsize()
 
 
-def search(search_query, max_search_results=10000):
+def search(search_query, max_search_results=100):
     logging.debug(f"searching : {search_query}")
     df = pd.DataFrame(arxiv.query(search_query,
                                   max_results=max_search_results))
@@ -53,6 +53,7 @@ def search(search_query, max_search_results=10000):
 def BFS_author_query(original_author, max_search_results=10, max_depth=5):
     """ Traverse the papers by coauthors and return a list of all the articles """
     original_author = original_author.lower()
+
     def next_traversal_vertices(author, all_articles):
         """ 
         return list of things to bump onto the queue, to traversal 1 deeper level
@@ -63,7 +64,10 @@ def BFS_author_query(original_author, max_search_results=10, max_depth=5):
         # get arxiv articles for a specific search
         arxiv_articles = search(author, max_search_results=max_search_results)
         # return True if author is a coauthor of article
-        is_coauthor = lambda row: any([author.lower() == article_author.lower() for article_author in row.authors])
+        is_coauthor = lambda row: any([
+            author.lower() == article_author.lower()
+            for article_author in row.authors
+        ])
         # get df of coauthored articles
         coauthored_articles = arxiv_articles[arxiv_articles.apply(is_coauthor,
                                                                   axis=1)]
@@ -106,21 +110,23 @@ def get_authors_to_articles(all_articles):
 
 
 def _create_edge(author1, author2, G):
+    """ helper function that """
     if G.has_edge(author1, author2):
         G[author1][author2]['weight'] += 1
     else:
         G.add_edge(author1, author2, weight=1)
 
-
+# TODO - take max-depth in generate-author-graph (so this is isn't only configurable in generating the articles data)
 def generate_author_graph(all_articles):
     """ return networkx graph of all the authors, with weights between them based on their shared papers"""
     G = nx.Graph()
     for authors in all_articles.authors:
-        # Lists are sometimes read into a string, convert it back to a list
-        if isinstance(authors,str):
+        # Lists are sometimes read into a string, convert it back to a list of authors 
+        # (i.e. "['asda', 'bb' ]" -> ['asda', 'bb'])
+        if isinstance(authors, str):
             authors = ast.literal_eval(authors)
-        
+
         for i in range(len(authors)):
             for j in range(i + 1, len(authors)):
-                _create_edge(authors[i], authors[j], G)
+                _create_edge(authors[i].lower(), authors[j].lower(), G)
     return G

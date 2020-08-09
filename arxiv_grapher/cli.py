@@ -8,7 +8,7 @@ from arxiv_grapher import (graphing, arxiv_traverser)
 
 # TODO - save the authors and things optionally
 # TODO - save the plot optionally
-# TODO - using logging library
+# TODO - consider different ways of sorting received articles
 
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
@@ -49,27 +49,45 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="""CSV to read from (won't crawl arxiv directly then)""")
-@click.option("--debug_mode",
+@click.option("--max-results-per-search",
+              "-m",
+              default=30,
+              show_default=True,
+              required=False,
+              help="""How many articles to accept per author""")
+@click.option("--max-depth",
               "-d",
+              default=3,
+              show_default=True,
+              required=False,
+              help="""max-depth to traverse if searching arxiv""")
+@click.option("--debug_mode",
+              "-D",
               default=False,
               show_default=True,
               is_flag=True,
               help="set logging to debug level")
 @click.pass_context
-def crawl_and_plot(ctx, original_author, save_csv, read_csv, debug_mode):
+def crawl_and_plot(ctx, original_author, save_csv, read_csv,
+                   max_results_per_search, max_depth, debug_mode):
+    if debug_mode:
+        logger.setLevel(logging.DEBUG)
+        for handler in logger.handlers:
+            handler.setLevel(logging.DEBUG)
+
     if read_csv:
-        print("hello")
-        print(read_csv)
         articles = pd.read_csv(read_csv)
     else:
         articles = arxiv_traverser.BFS_author_query(
-            original_author=original_author, max_search_results=5, max_depth=2)
+            original_author=original_author,
+            max_search_results=max_results_per_search,
+            max_depth=max_depth)
     if save_csv:
         articles.to_csv(save_csv)
     # generate a graph of authors, where the weight is the number of papers shared
     G = arxiv_traverser.generate_author_graph(articles)
     #plot_weighted_graph(G)
-    graphing.graph(G)
+    graphing.graph(G, original_author)
 
 
 def main():
