@@ -29,3 +29,10 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
 - Investigate ways to define a few metrics on a graph, then rank individuals
 - Generate reports on other academics, as a way to investigate who to look into next
 - Be able to process more information than just Co-authoring, when considering new academics (i.e. topics)
+- Add some images and put them in the git repo, for others to understand the tool better
+
+- To-Do define some kind of bottle-neck distance or distance about number of paths to get to another individual
+`(In order to avoid bottlenecks)
+# Graphing To-Do:
+- Make the distance between nodes be porportional to the weight between them
+

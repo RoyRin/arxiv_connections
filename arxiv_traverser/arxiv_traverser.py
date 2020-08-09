@@ -109,6 +109,7 @@ def get_authors_to_articles(all_articles):
     return author_to_articles
 
 
+# TODO - see if there is a differnet way to do this - is this accidentally directed?
 def _create_edge(author1, author2, G):
     """ helper function that """
     if G.has_edge(author1, author2):
@@ -116,12 +117,13 @@ def _create_edge(author1, author2, G):
     else:
         G.add_edge(author1, author2, weight=1)
 
+
 # TODO - take max-depth in generate-author-graph (so this is isn't only configurable in generating the articles data)
 def generate_author_graph(all_articles):
     """ return networkx graph of all the authors, with weights between them based on their shared papers"""
     G = nx.Graph()
     for authors in all_articles.authors:
-        # Lists are sometimes read into a string, convert it back to a list of authors 
+        # Lists are sometimes read into a string, convert it back to a list of authors
         # (i.e. "['asda', 'bb' ]" -> ['asda', 'bb'])
         if isinstance(authors, str):
             authors = ast.literal_eval(authors)

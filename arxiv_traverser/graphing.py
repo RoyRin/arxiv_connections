@@ -11,7 +11,7 @@ logger = logging.getLogger()
 def plot_weighted_graph(G):
     """Plot a weighted graph"""
 
-    pos = nx.spring_layout(G)
+    pos = nx.spring_layout(G, weight="weight")
     nx.draw_networkx_nodes(G, pos, node_color='green')  #,node_size=700)
 
     all_weights_sum = sum([G[e[0]][e[1]]['weight'] for e in G.edges])
@@ -41,15 +41,38 @@ def simple_plot(G):
 # https://plotly.com/python/network-graphs/
 
 
+def _make_edge(x, y, width):
+    """
+    Args:
+        x: a tuple of the x from and to, in the form: tuple([x0, x1, None])
+        y: a tuple of the y from and to, in the form: tuple([y0, y1, None])
+        width: The width of the line
+
+    Returns:
+        a Scatter plot which represents a line between the two points given. 
+    """
+    return go.Scatter(x=x,
+                      y=y,
+                      line=dict(width=width, color='#888'),
+                      hoverinfo='none',
+                      mode='lines')
+
+
 def plot_plotly_simple(G, original_name=None):
     """
+    Generate networkx plot using Plotly
+        Note : Plotly doesn't have a direct way to plot a networkx Graph
+        So, we scatter plot points, and draw lines between them  
     https://plotly.com/python/plotly-fundamentals/    
     
     more relevant taken from : https://stackoverflow.com/questions/51410283/how-to-efficiently-create-interactive-directed-network-graphs-with-arrows-on-p
 
     """
+    original_name = original_name.lower()
+    # compute shortest path to get to original node (unweighted distance)
     shortest_path = dict(nx.all_pairs_shortest_path_length(G))
-    pos = nx.spring_layout(G)
+
+    pos = nx.spring_layout(G, weight="weight")
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
 
@@ -64,55 +87,52 @@ def plot_plotly_simple(G, original_name=None):
     # Make a list of edges for plotly
     edge_x = []
     edge_y = []
-
+    edge_text = []
     for edge in G.edges():
-        x0, y0 = G.nodes[edge[0]]['pos']
-        x1, y1 = G.nodes[edge[1]]['pos']
-        edge_x.append(x0)
-        edge_x.append(x1)
-        edge_x.append(None)
-        edge_y.append(y0)
-        edge_y.append(y1)
-        edge_y.append(None)
+        n1 = edge[0]
+        n2 = edge[1]
+        x0, y0 = G.nodes[n1]['pos']
+        x1, y1 = G.nodes[n2]['pos']
+        edge_x.extend([x0, x1, None])
+        edge_y.extend([y0, y1, None])
+        d = G.get_edge_data(n1, n2)
+        weight_text = d.get("weight", "N/A")
+        edge_text.append(f"shared papers: {weight_text}")
 
-    edge_trace = go.Scatter(x=edge_x,
-                            y=edge_y,
-                            line=dict(width=0.5, color='#888'),
-                            hoverinfo='none',
-                            mode='lines')
-
-    node_trace = go.Scatter(
-        x=node_x,
-        y=node_y,
-        mode="markers",
-        #mode="markers+text",
+    edge_trace = go.Scatter(
+        x=edge_x,
+        y=edge_y,
+        line=dict(width=0.5, color='#888'),
         hoverinfo='text',
-        marker=dict(
-            showscale=True,
-            # colorscale options
-            #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-            #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-            #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-            colorscale='YlGnBu',
-            reversescale=True,
-            color=[],
-            size=10,
-            colorbar=dict(thickness=15,
-                          title='Node Connections',
-                          xanchor='left',
-                          titleside='right'),
-            line_width=2))
+        #mode="markers+text")
+        mode='lines')
+    edge_trace.text = edge_text
 
+    node_trace = go.Scatter(x=node_x,
+                            y=node_y,
+                            mode="markers",
+                            hoverinfo='text',
+                            marker=dict(showscale=True,
+                                        colorscale='YlGnBu',
+                                        reversescale=True,
+                                        color=[],
+                                        size=10,
+                                        colorbar=dict(thickness=15,
+                                                      title='Node Connections',
+                                                      xanchor='left',
+                                                      titleside='right'),
+                                        line_width=2))
+    # Plot the original node as red, to make it easier to see
     node_trace_original = None
     if original_name:
         original_x, original_y = G.nodes[original_name]['pos']
-        node_trace_original = go.Scatter(
-            x=[original_x],
-            y=[original_y],
-            #mode = "markers",
-            mode="markers+text",
-            hoverinfo='text',
-            marker=dict(color=["Red"], size=9, line_width=2))
+        node_trace_original = go.Scatter(x=[original_x],
+                                         y=[original_y],
+                                         mode="markers+text",
+                                         hoverinfo='text',
+                                         marker=dict(color=["Red"],
+                                                     size=9,
+                                                     line_width=2))
 
     #Color nodes and add hover-text
     node_adjacencies = []
