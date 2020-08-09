@@ -28,11 +28,14 @@ Once you have done the steps from 'How To Install', Now you can either run your 
         - You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
         - To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
 
-# Need To-Do:
+# Development
+## For developers:
+1. To set-up nice formatting: run `ln -s hooks/pre-commit.sh .git/hooks/pre-commit.sh`
+## Need To-Do:
 - Add tests !
 - read through all the TODO comments, and actually fix them!
 
-# Nice To-Do:
+## Nice To-Do:
 - be able to create a metric between 2 different authors
 - Investigate ways to define a few metrics on a graph, then rank individuals
 - Generate reports on other academics, as a way to investigate who to look into next
@@ -41,5 +44,5 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 
 - To-Do define some kind of bottle-neck distance or distance about number of paths to get to another individual
 `(In order to avoid bottlenecks)
-# Graphing To-Do:
+## Graphing To-Do:
 - Make the distance between nodes be porportional to the weight between them
