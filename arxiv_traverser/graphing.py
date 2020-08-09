@@ -150,11 +150,18 @@ def plot_plotly_simple(G, original_name=None):
             hover_text += (f"<br>dist-to-origin : {dist}")
 
         hover_text += f"<br>Papers pulled: {len(connections)}"
-        neighbors = list(G.neighbors(name))
-        if neighbors:
-            hover_text += f"co-authors:"
-        for neighbor in neighbors:
-            hover_text += "<br>" + neighbor
+        #neighbors = list(G.neighbors(name))
+        # TODO - sort the co-authors by number of papers shared
+        coauthors = sorted(G[name].items(),
+                           key=lambda edge: edge[1]['weight'],
+                           reverse=True)
+
+        if coauthors:
+            hover_text += f"<br>co-authors:"
+        for coauthor, weight_dict in coauthors:
+
+            hover_text += "<br>" + str(coauthor) + " : " + str(
+                weight_dict.get('weight', "N/A"))
         node_text.append(hover_text)
 
     node_trace.marker.color = node_adjacencies
