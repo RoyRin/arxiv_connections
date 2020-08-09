@@ -58,6 +58,8 @@ def cli(ctx):
 @click.pass_context
 def crawl_and_plot(ctx, original_author, save_csv, read_csv, debug_mode):
     if read_csv:
+        print("hello")
+        print(read_csv)
         articles = pd.read_csv(read_csv)
     else:
         articles = arxiv_traverser.BFS_author_query(

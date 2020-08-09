@@ -4,6 +4,7 @@ import queue
 from collections import defaultdict
 import networkx as nx
 import logging
+import ast
 
 logger = logging.getLogger()
 
@@ -114,8 +115,12 @@ def _create_edge(author1, author2, G):
 def generate_author_graph(all_articles):
     """ return networkx graph of all the authors, with weights between them based on their shared papers"""
     G = nx.Graph()
-    for i, row in all_articles.iterrows():
-        for i in range(len(row.authors)):
-            for j in range(i + 1, len(row.authors)):
-                _create_edge(row.authors[i], row.authors[j], G)
+    for authors in all_articles.authors:
+        # Lists are sometimes read into a string, convert it back to a list
+        if isinstance(authors,str):
+            authors = ast.literal_eval(authors)
+        
+        for i in range(len(authors)):
+            for j in range(i + 1, len(authors)):
+                _create_edge(authors[i], authors[j], G)
     return G
