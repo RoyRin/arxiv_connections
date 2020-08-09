@@ -82,8 +82,8 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv,
             original_author=original_author,
             max_search_results=max_results_per_search,
             max_depth=max_depth)
-    if save_csv:
-        articles.to_csv(save_csv)
+        if save_csv:
+            articles.to_csv(save_csv)
     # generate a graph of authors, where the weight is the number of papers shared
     G = arxiv_traverser.generate_author_graph(articles)
     #plot_weighted_graph(G)

@@ -8,8 +8,8 @@ import ast
 
 logger = logging.getLogger()
 
-# TODO : test discovery BFS Traversal
 # TODO : traverse people, but then in the final plot, only show people maximally X distance away (prune graph by distance)
+# TODO - be able to create a report on a person, based on their 'proximity' to another academic
 
 
 def discovery_BFS_traversal(root, max_depth, next_traversal_f):
@@ -25,7 +25,7 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
 
     discovered.add(root)
     Q.put(root)
-    depth = 0
+    depth = 1
     timeToDepthIncrease = 1
 
     while not Q.empty() and depth <= max_depth:

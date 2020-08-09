@@ -22,7 +22,7 @@ Arxiv-traverser is a python pkg, and provides a CLI to find academics related to
 ## How to Use:
 Once you have done the steps from 'How To Install', Now you can either run your own python package or use the CLI from terminal
     - from terminal, 
-        - Quick-start example: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r test_data/dmitry_rinberg.csv`
+        - Quick-start example: `arxiv-traverser crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
         - run `arxiv-traverser --help` for an explanation of how to run things
     - From Jupyter:
         - You can explore the data directly in a jupyter notebook using arxiv_traverser/arxiv_explorer.ipynb
@@ -30,7 +30,7 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 
 # Development
 ## For developers:
-Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/
+Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/ and https://githooks.com/
 1. To set-up easy formatting practices (i.e yapf + stripping jupyter notebooks):
     - run `ln -s ../../hooks/pre-commit.sh .git/hooks/pre-commit` from arxiv_traverser home
 `

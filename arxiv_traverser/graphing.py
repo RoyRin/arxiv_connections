@@ -58,6 +58,9 @@ def _make_edge(x, y, width):
                       mode='lines')
 
 
+# TODO - would be nice if I could see topics, or get a link to the person webpage when I click on them
+
+
 def plot_plotly_simple(G, original_name=None):
     """
     Generate networkx plot using Plotly
@@ -105,7 +108,7 @@ def plot_plotly_simple(G, original_name=None):
         line=dict(width=0.5, color='#888'),
         hoverinfo='text',
         #mode="markers+text")
-        mode='lines')
+        mode='lines+text')
     edge_trace.text = edge_text
 
     node_trace = go.Scatter(x=node_x,
@@ -124,7 +127,7 @@ def plot_plotly_simple(G, original_name=None):
                                         line_width=2))
     # Plot the original node as red, to make it easier to see
     node_trace_original = None
-    if original_name:
+    if original_name and original_name in G.nodes:
         original_x, original_y = G.nodes[original_name]['pos']
         node_trace_original = go.Scatter(x=[original_x],
                                          y=[original_y],
