@@ -127,7 +127,7 @@ def plot_weighted_graph(G):
 
 # example for weighted graph drawing: https://networkx.github.io/documentation/stable/auto_examples/drawing/plot_weighted_graph.html
 if __name__ == "__main__":
-    articles = BFS_author_query(original_author = "Alexandra Chouldechova", max_search_results= 5, max_depth= 2)
+    articles = BFS_author_query(original_author = "Dmitry Rinberg", max_search_results= 5, max_depth= 2)
 
     # generate a graph of authors, where the weight is the number of papers shared
     G = generate_author_graph(articles)

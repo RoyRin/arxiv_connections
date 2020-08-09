@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "arxiv_graphing"
+name = "arxiv-grapher"
 version = "0.1.0"
 description = "python package used to visualize academics and find related people"
 authors = ["Roy Rinberg <royrinberg@gmail.com>"]
