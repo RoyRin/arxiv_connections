@@ -33,15 +33,11 @@ def simple_plot(G):
 
 # example for weighted graph drawing: https://networkx.github.io/documentation/stable/auto_examples/drawing/plot_weighted_graph.html
 
-# TODO : color the original author
-# TODO : put the original author in the center of the plot
-# TODO : explore plotly
-
 # plotly
 # https://plotly.com/python/network-graphs/
 
 
-def _make_edge(x, y, width):
+def _make_edge(x, y, width):  # TODO - this isn't used yet
     """
     Args:
         x: a tuple of the x from and to, in the form: tuple([x0, x1, None])
@@ -59,6 +55,11 @@ def _make_edge(x, y, width):
 
 
 # TODO - would be nice if I could see topics, or get a link to the person webpage when I click on them
+# TODO - add hover text over edges
+# note: this ^ might not be possible :( https://stackoverflow.com/questions/55962964/adding-hover-text-to-plotly-scatter-plot-lines-or-multiple-colors-for-scatter-pl
+# TODO - add width to the edges by weight
+# TODO - consider using Dash to visualize a whole dashboard of people interactively
+#   for ^ check this : https://www.youtube.com/watch?v=hSPmj7mK6ng
 
 
 def plot_plotly_simple(G, original_name=None):
@@ -67,7 +68,7 @@ def plot_plotly_simple(G, original_name=None):
         Note : Plotly doesn't have a direct way to plot a networkx Graph
         So, we scatter plot points, and draw lines between them  
     https://plotly.com/python/plotly-fundamentals/    
-    
+        Here is a description of plotly figures: https://plotly.com/python/figure-structure/ 
     more relevant taken from : https://stackoverflow.com/questions/51410283/how-to-efficiently-create-interactive-directed-network-graphs-with-arrows-on-p
 
     """
@@ -106,11 +107,10 @@ def plot_plotly_simple(G, original_name=None):
         x=edge_x,
         y=edge_y,
         line=dict(width=0.5, color='#888'),
-        hoverinfo='text',
-        #mode="markers+text")
-        mode='lines+text')
+        mode="lines",
+        #mode="markers+text",
+        hoverinfo='text')
     edge_trace.text = edge_text
-
     node_trace = go.Scatter(x=node_x,
                             y=node_y,
                             mode="markers",
@@ -145,7 +145,7 @@ def plot_plotly_simple(G, original_name=None):
         node_adjacencies.append(len(adjacencies[1]))
 
         hover_text = f"{name}|"
-        if original_name:
+        if original_name and original_name in G.nodes:
             dist = shortest_path[original_name][name]
             hover_text += f"to-origin: {dist}|"
 
@@ -157,16 +157,19 @@ def plot_plotly_simple(G, original_name=None):
     data = [edge_trace, node_trace]
     if node_trace_original:
         data.append(node_trace_original)
-    fig = go.Figure(
-        data=data,
-        layout=go.Layout(
-            title='<br>Arxiv co-author exploration tracker ',
-            titlefont_size=16,
-            showlegend=True,
-            #hovermode='closest',
-            margin=dict(b=20, l=5, r=5, t=40),
-            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
+    fig = go.Figure(data=data,
+                    layout=go.Layout(
+                        title='<br>Arxiv co-author exploration tracker ',
+                        titlefont_size=16,
+                        showlegend=True,
+                        hovermode='closest',
+                        margin=dict(b=20, l=5, r=5, t=40),
+                        xaxis=dict(showgrid=False,
+                                   zeroline=False,
+                                   showticklabels=False),
+                        yaxis=dict(showgrid=False,
+                                   zeroline=False,
+                                   showticklabels=False)))
     fig.show()
 
 
