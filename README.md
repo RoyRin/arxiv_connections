@@ -30,7 +30,7 @@ Python3 comes with `venv`, and `virtualenv` also works. This step is optional, b
 
 1. `pip install arxiv-connections`
 
-### Install from Source 
+### Install from Source
 
 1. `git clone git@github.com:RoyRin/arxiv_connections.git` 
 2. `cd arxiv_connections && poetry install arxiv_connections`
@@ -41,15 +41,27 @@ Once you have done the steps from 'How To Install', Now you can either run your 
 
 ### High-level Description
 
-Generally, the current code will pull articles from Arxiv. It will generate nodes for each author of each article. It 
+There is 1 library (arxiv_connections) and 2 ways to use it: Command Line (call `arxiv-connector`) and calling the code directly 
+from python (using `import arxiv_connection`). There is a jupyter notebook named arxiv_connections/arxiv_explorer.ipynb that 
+is to serve as an example for this.
+
+Generally, the current code will pull articles from Arxiv. It will generate graph-nodes for each author of each article. It 
 will create edges between authors if they have co-authored something, with the edge weights proportional to the 
-number of papers they have co-authored.
+number of papers they have co-authored. 
 
 For new author-investigations, you can scrape directly from arxiv. To make future investigations easier, you can
 save the articles discovered off arxiv to a CSV, and then read from it in future iterations of the investigation.
+(i.e. `arxiv-connector crawl-and-plot 'fname lastname' -s name.csv -m 7 -d 3` and 
+then `arxiv-connector crawl-and-plot 'fname lastname' -r name.csv`)
 
-Note: I do not recommend having 
-The number of queries is bounded at (max_queries)^(max_depth-1). So, make sure it's not too big...
+**Note** you can easily make a lot of requests and keep the program from running. If you are 
+pulling data from arxiv, you should estimate the number of you make as [max-results-per-search ** max-depth]. 
+
+### Using the Command Line
+
+If you have properly installed `arxiv-connector` it should tab-complete. Just calling it should produce a list of 
+sub-commands. As of 8/10/20, there is only 1 sub-command `crawl-and-plot` to understand how it works, run
+ `arxiv-connector crawl-and-plot --help`
 
 ### Quick-Start
 
@@ -57,6 +69,7 @@ The number of queries is bounded at (max_queries)^(max_depth-1). So, make sure i
 
 * Quick-start example #1 (from a file): `arxiv-connector crawl-and-plot 'dmitry rinberg' -r example_data/dmitry_rinberg.csv`
 * Quick-start example #2 (pull from arxiv): `arxiv-connector crawl-and-plot 'dmitry rinberg' -s dmitry_rinberg_read.csv -d 3 -m 8 -D`
+    (this example code is in the git repo)
 * run `arxiv-connector --help` for an explanation of the CLI's commands
 
 **Quick-start From Jupyter:**
