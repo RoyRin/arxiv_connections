@@ -172,7 +172,7 @@ def plot_plotly_simple(G, original_name=None):
         data.append(node_trace_original)
     fig = go.Figure(data=data,
                     layout=go.Layout(
-                        title='<br>Arxiv co-author exploration tracker ',
+                        title='<br>Arxiv co-author exploration ',
                         titlefont_size=16,
                         showlegend=True,
                         hovermode='closest',
