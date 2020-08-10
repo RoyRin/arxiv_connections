@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "arxiv-traverser"
+name = "arxiv-connections"
 version = "0.1.0"
 description = "python package used to visualize academics and find related people"
 authors = ["Roy Rinberg <royrinberg@gmail.com>"]
 packages = [
-   { include = "arxiv_traverser" },
+   { include = "arxiv_connections" },
    ]
 
 [tool.poetry.scripts]
-arxiv-traverser = "arxiv_traverser.cli:main"
+arxiv-connector = "arxiv_connections.cli:main"
 
 
 [tool.poetry.dependencies]

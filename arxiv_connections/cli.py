@@ -4,7 +4,7 @@ import click
 import logging
 import pandas as pd
 # locals
-from arxiv_traverser import (graphing, arxiv_traverser)
+from arxiv_connections import (graphing, arxiv_util)
 
 # TODO - save the authors and things optionally
 # TODO - save the plot optionally
