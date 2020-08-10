@@ -185,6 +185,11 @@ def plot_plotly_simple(G, original_name=None):
                                    showticklabels=False)))
     fig.show()
 
+# TODO - add - on-click functionality
+def on_click():
+    pass
+    # https://plotly.com/python/click-events/
+    # Open arxiv link to the user https://arxiv.org/search/?query=Alexandra+Chouldechova&searchtype=all&source=header
 
 def graph(G, original_name=None):
     #plot_weighted_graph(G)

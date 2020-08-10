@@ -100,6 +100,8 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv,
     #plot_weighted_graph(G)
     graphing.graph(G, original_author)
 
+# TODO - add in process for computing distance between 2 different people
+# TODO - add in process for getting a report on recommendations of related authors
 
 def main():
     cli()
