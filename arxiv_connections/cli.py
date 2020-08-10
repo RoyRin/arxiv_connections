@@ -19,7 +19,7 @@ stream_handler.setFormatter(
 
 logging.basicConfig(level=logging.INFO, handlers=[stream_handler])
 logger = logging.getLogger()
-
+# TODO - improve logging to not be so noisy all the time
 
 @click.group(help=""" """)
 @click.pass_context

@@ -144,10 +144,10 @@ def plot_plotly_simple(G, original_name=None):
     for _, adjacencies in enumerate(G.adjacency()):
         name, connections = adjacencies
         node_adjacencies.append(len(adjacencies[1]))
-        hover_text = name.title()
+        hover_text = name.upper()
         if original_name and original_name in G.nodes:
             dist = shortest_path[original_name][name]
-            hover_text += (f"<br>dist-to-origin : {dist}")
+            hover_text += (f"<br>Distance to origin : {dist}")
 
         hover_text += f"<br>Papers pulled: {len(connections)}"
         #neighbors = list(G.neighbors(name))
@@ -157,10 +157,10 @@ def plot_plotly_simple(G, original_name=None):
                            reverse=True)
 
         if coauthors:
-            hover_text += f"<br>co-authors:"
+            hover_text += f"<br>Co-Authors:"
         for coauthor, weight_dict in coauthors:
 
-            hover_text += "<br>" + str(coauthor.title()) + " : " + str(
+            hover_text += "<br> " + str(coauthor.title()) + " : " + str(
                 weight_dict.get('weight', "N/A"))
         node_text.append(hover_text)
 
