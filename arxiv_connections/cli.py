@@ -61,6 +61,16 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="""max-depth to traverse if searching arxiv""")
+              
+@click.option(
+    "--concentric-circle-graphing",
+    "-c",
+    default=False,
+    show_default=True,
+    is_flag=True,
+    help=
+    "visualize graph as a series of concentric circles, instead of force-directed"
+)
 @click.option(
     "--dont-halve-queries-per-graph-deepening",
     "-H",
@@ -68,7 +78,7 @@ def cli(ctx):
     show_default=True,
     is_flag=True,
     help=
-    "default- for each network-deepening, shrink the # of queries to scrape by 1/2. This flag turns this off"
+    "Default case: for each network-deepening, shrink the # of queries to scrape by 1/2. This flag turns this off"
 )
 @click.option("--debug_mode",
               "-D",
@@ -78,7 +88,7 @@ def cli(ctx):
               help="set logging to debug level")
 @click.pass_context
 def crawl_and_plot(ctx, original_author, save_csv, read_csv,
-                   max_results_per_search, max_depth,
+                   max_results_per_search, max_depth,concentric_circle_graphing,
                    dont_halve_queries_per_graph_deepening, debug_mode):
     if debug_mode:
         logger.setLevel(logging.DEBUG)
@@ -98,7 +108,7 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv,
     # generate a graph of authors, where the weight is the number of papers shared
     G = arxiv_util.generate_author_graph(articles)
     #plot_weighted_graph(G)
-    graphing.graph(G, original_author)
+    graphing.graph(G, original_author, concentric_circle_graphing = concentric_circle_graphing)
 
 # TODO - add in process for computing distance between 2 different people
 # TODO - add in process for getting a report on recommendations of related authors
