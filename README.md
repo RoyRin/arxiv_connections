@@ -48,13 +48,20 @@ The number of queries is bounded at (max_queries)^(max_depth-1). So, make sure i
 
 Note, this has been developed on Ubuntu 18.04.
 
-## For developers
+## Testing
+
+To test run `pytest tests`
+
+## Formatting for developers
 Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/ and https://githooks.com/
 
 1. To set-up easy formatting practices (i.e yapf + stripping jupyter notebooks):
     * run `ln -s ../../hooks/pre-commit.sh .git/hooks/pre-commit` from arxiv_connector home
 
+
+
 # To-Do list
+
 ## Need To-Do
 
 * Add tests !
@@ -74,3 +81,4 @@ Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-u
 ## Graphing To-Do 
 
 * Make the distance between nodes be porportional to the weight between them
+
