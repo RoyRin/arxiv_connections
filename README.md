@@ -89,7 +89,8 @@ How to Zoom
 ![How to Zoom](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_how_to_zoom.png)
 Hover
 ![Hover](https://github.com/RoyRin/arxiv_connections/blob/master/assets/zoom_and_hover.png)
-
+concentric-view
+![concentric-view](https://github.com/RoyRin/arxiv_connections/blob/master/assets/concentric.png)
 
 ## Development
 
