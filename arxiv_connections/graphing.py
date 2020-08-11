@@ -65,13 +65,18 @@ def add_plotly_hover_text(G, shortest_path, original_name):
     node_adjacencies = []
     node_text = []
     for _, adjacencies in enumerate(G.adjacency()):
+        # adjacencies looks like : (name, {name: {weight:3}, ... } ... )
         name, connections = adjacencies
-        node_adjacencies.append(len(adjacencies[1]))
+        
+        node_adjacencies.append(len(connections))
         hover_text = name.upper()
         if original_name and original_name in G.nodes:
             dist = shortest_path[original_name][name]
             hover_text += (f"<br>Distance to origin : {dist}")
-        hover_text += f"<br>Papers pulled: {len(connections)}"
+        hover_text += f"<br># connections: {len(connections)}"
+
+        num_papers_connections = sum([ d["weight"] for d in connections.values() ])
+        hover_text += f"<br># papers connections: {num_papers_connections} (approx)"
         coauthors = sorted(G[name].items(),
                            key=lambda edge: edge[1]['weight'],
                            reverse=True)
