@@ -212,7 +212,7 @@ def plot_plotly(G, original_name=None, concentric_circle_graphing = False):
         data.append(node_trace_original)
     fig = go.Figure(data=data,
                     layout=go.Layout(
-                        title='<br>Arxiv co-author exploration ',
+                        title='Arxiv co-author exploration<br>[Click and drag to form a box to zoom. Double-click to zoom out]',
                         titlefont_size=16,
                         showlegend=True,
                         hovermode='closest',
@@ -233,5 +233,4 @@ def on_click():
 
 def graph(G, original_name=None, concentric_circle_graphing= False):
     #plot_weighted_graph(G)
-    print(concentric_circle_graphing)
     plot_plotly(G, original_name=original_name, concentric_circle_graphing = concentric_circle_graphing)
