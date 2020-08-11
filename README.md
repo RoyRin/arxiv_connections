@@ -77,6 +77,16 @@ sub-commands. As of 8/10/20, there is only 1 sub-command `crawl-and-plot` to und
 * You can explore the data directly in a jupyter notebook using `arxiv_connector/arxiv_explorer.ipynb`
 * To run the jupyter notebook, call `jupyter notebook` (you may need to `pip install jupyter`) and navigate to the jupyter file 
 
+## Images
+
+### crawl-and-plot
+ 
+![arxiv-connector crawl-and-plot 'stuart russel' -m 15 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_big_graph.png)
+![arxiv-connector crawl-and-plot 'stuart russel' -m 7 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_small_graph.png)
+![How to Zoom](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_how_to_zoom.png)
+![Hover](https://github.com/RoyRin/arxiv_connections/blob/master/assets/zoom_and_hover.png)
+
+
 ## Development
 
 Note, this has been developed on Ubuntu 18.04.
@@ -112,3 +122,4 @@ Commit hooks : following guidance from https://codeinthehole.com/tips/tips-for-u
 ### Graphing To-Do
 
 * Make the distance between nodes be porportional to the weight between them
+
