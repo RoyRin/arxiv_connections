@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arxiv-connections"
-version = "0.1.1"
+version = "0.1.2"
 description = "python package used to visualize academics and find related people"
 authors = ["Roy Rinberg <royrinberg@gmail.com>"]
 packages = [

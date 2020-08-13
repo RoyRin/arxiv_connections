@@ -51,7 +51,7 @@ def cli(ctx):
               help="""CSV to read from (won't crawl arxiv directly then)""")
 @click.option("--max-results-per-search",
               "-m",
-              default=30,
+              default=10,
               show_default=True,
               required=False,
               help="""How many articles to accept per author""")
