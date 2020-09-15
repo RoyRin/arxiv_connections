@@ -1,9 +1,24 @@
 #!/bin/bash
+# apply python formatting to .py and .ipynb files
 GIT_HOME=$(git rev-parse --show-toplevel)
+
+files=`git diff --name-only --cached`
+
+for filename in $files; do
+
+# apply yapf on .py files
+if [[ $filename == *.py ]] 
+then
+    python -m yapf -i $GIT_HOME/$filename
+fi 
+
 # clean the jupyter notebooks, to make sure that they don't bloat
-nbstripout $GIT_HOME/arxiv_traverser/*ipynb
-# apply yapf on python files
-python -m yapf -i $GIT_HOME/arxiv_traverser/*py
+if [[ $filename == *.ipynb ]] 
+then
+    nbstripout $GIT_HOME/$filename
+fi 
 # add all the changes to the commit
-git add $GIT_HOME/*/*py
-git add $GIT_HOME/*/*ipynb
+git add $GIT_HOME/$filename
+
+done
+
