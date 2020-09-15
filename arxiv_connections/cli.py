@@ -21,6 +21,7 @@ logging.basicConfig(level=logging.INFO, handlers=[stream_handler])
 logger = logging.getLogger()
 # TODO - improve logging to not be so noisy all the time
 
+
 @click.group(help=""" """)
 @click.pass_context
 def cli(ctx):
@@ -61,7 +62,6 @@ def cli(ctx):
               show_default=True,
               required=False,
               help="""max-depth to traverse if searching arxiv""")
-              
 @click.option(
     "--concentric-circle-graphing",
     "-c",
@@ -88,7 +88,8 @@ def cli(ctx):
               help="set logging to debug level")
 @click.pass_context
 def crawl_and_plot(ctx, original_author, save_csv, read_csv,
-                   max_results_per_search, max_depth,concentric_circle_graphing,
+                   max_results_per_search, max_depth,
+                   concentric_circle_graphing,
                    dont_halve_queries_per_graph_deepening, debug_mode):
     if debug_mode:
         logger.setLevel(logging.DEBUG)
@@ -108,10 +109,14 @@ def crawl_and_plot(ctx, original_author, save_csv, read_csv,
     # generate a graph of authors, where the weight is the number of papers shared
     G = arxiv_util.generate_author_graph(articles)
     #plot_weighted_graph(G)
-    graphing.graph(G, original_author, concentric_circle_graphing = concentric_circle_graphing)
+    graphing.graph(G,
+                   original_author,
+                   concentric_circle_graphing=concentric_circle_graphing)
+
 
 # TODO - add in process for computing distance between 2 different people
 # TODO - add in process for getting a report on recommendations of related authors
+
 
 def main():
     cli()
