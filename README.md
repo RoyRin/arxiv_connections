@@ -1,7 +1,9 @@
 # Arxiv-Connections
 
-Arxiv-connections is a python pkg, and provides a CLI (`arxiv-connector`) to find academics related to other academics
- based on closeness through arxiv co-authorings.
+Arxiv-connections is a python pkg, and provides a CLI (`arxiv-connector`) to find academics related to other academics based on closeness through arxiv co-authorings.
+
+You can interact with the notebook and code here : 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/RoyRin/arxiv_connections/HEAD)
 
 
 ## High-level Goal
