@@ -67,7 +67,7 @@ def add_plotly_hover_text(G, shortest_path, original_name):
     for _, adjacencies in enumerate(G.adjacency()):
         # adjacencies looks like : (name, {name: {weight:3}, ... } ... )
         name, connections = adjacencies
-        
+
         node_adjacencies.append(len(connections))
         hover_text = name.upper()
         if original_name and original_name in G.nodes:
@@ -75,7 +75,8 @@ def add_plotly_hover_text(G, shortest_path, original_name):
             hover_text += (f"<br>Distance to origin : {dist}")
         hover_text += f"<br># connections: {len(connections)}"
 
-        num_papers_connections = sum([ d["weight"] for d in connections.values() ])
+        num_papers_connections = sum(
+            [d["weight"] for d in connections.values()])
         hover_text += f"<br># papers connections: {num_papers_connections} (approx)"
         coauthors = sorted(G[name].items(),
                            key=lambda edge: edge[1]['weight'],
@@ -87,6 +88,8 @@ def add_plotly_hover_text(G, shortest_path, original_name):
                 weight_dict.get('weight', "N/A"))
         node_text.append(hover_text)
     return node_adjacencies, node_text
+
+
 def add_plotly_edge_trace(G):
     # Make a list of edges for plotly
     edge_x = []
@@ -114,6 +117,7 @@ def add_plotly_edge_trace(G):
     edge_trace.text = edge_text
     return edge_trace
 
+
 def add_plotly_node_trace(G, original_name):
     # Make list of nodes for plotly
     node_x = []
@@ -137,11 +141,13 @@ def add_plotly_node_trace(G, original_name):
                                                       titleside='right'),
                                         line_width=2))
     shortest_path = dict(nx.all_pairs_shortest_path_length(G))
-    node_adjacencies, node_text = add_plotly_hover_text(G, shortest_path, original_name)
+    node_adjacencies, node_text = add_plotly_hover_text(
+        G, shortest_path, original_name)
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
 
     return node_trace
+
 
 def circular_layout_partially_fixed(G, original_name):
     """
@@ -151,30 +157,41 @@ def circular_layout_partially_fixed(G, original_name):
     # TODO - currently this isn't used, address that!
     all_paths_shortest_path = dict(nx.all_pairs_shortest_path_length(G))
     sp_from_origin = all_paths_shortest_path[original_name]
-    nodes_at_depth_1 = [node for node in G.nodes if sp_from_origin[node]==1 ]
-    circle_pos = nx.circular_layout(nodes_at_depth_1, scale = .1, center = [0., 0.])
-    pos = nx.spring_layout(G,pos=circle_pos,fixed= nodes_at_depth_1, weight = "weight" )
+    nodes_at_depth_1 = [node for node in G.nodes if sp_from_origin[node] == 1]
+    circle_pos = nx.circular_layout(nodes_at_depth_1,
+                                    scale=.1,
+                                    center=[0., 0.])
+    pos = nx.spring_layout(G,
+                           pos=circle_pos,
+                           fixed=nodes_at_depth_1,
+                           weight="weight")
     return pos
+
 
 def concentric_circles(G, original_name):
     """ each deeper layer of the graph is represented further out in the concentric ring"""
     all_paths_shortest_path = dict(nx.all_pairs_shortest_path_length(G))
     sp_from_origin = all_paths_shortest_path[original_name]
     pos = {}
-    depth = 0    
+    depth = 0
     positioned = 0
     scale = .1
     while positioned != len(G.nodes):
-        nodes_at_depth = [node for node in G.nodes if sp_from_origin[node]==depth ]
-        circle_pos = nx.circular_layout(nodes_at_depth, scale = scale, center = [0., 0.])
+        nodes_at_depth = [
+            node for node in G.nodes if sp_from_origin[node] == depth
+        ]
+        circle_pos = nx.circular_layout(nodes_at_depth,
+                                        scale=scale,
+                                        center=[0., 0.])
         pos = {**pos, **circle_pos}
         positioned += len(nodes_at_depth)
-        depth+=1
-        scale +=0.1
-        
+        depth += 1
+        scale += 0.1
+
     return pos
 
-def plot_plotly(G, original_name=None, concentric_circle_graphing = False):
+
+def plot_plotly(G, original_name=None, concentric_circle_graphing=False):
     """
     concentric_circles is a boolean flag, for visualizing graph in concentric circles 
 
@@ -192,13 +209,13 @@ def plot_plotly(G, original_name=None, concentric_circle_graphing = False):
     pos = nx.spring_layout(G, weight="weight")
     #pos = circular_layout_partially_fixed(G, original_name= original_name)
     if concentric_circle_graphing:
-        pos = concentric_circles(G, original_name = original_name)
+        pos = concentric_circles(G, original_name=original_name)
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
 
     edge_trace = add_plotly_edge_trace(G)
     node_trace = add_plotly_node_trace(G, original_name)
-    
+
     # Plot the original node as red, to make it easier to see
     node_trace_original = None
     if original_name and original_name in G.nodes:
@@ -215,20 +232,19 @@ def plot_plotly(G, original_name=None, concentric_circle_graphing = False):
     data = [edge_trace, node_trace]
     if node_trace_original:
         data.append(node_trace_original)
-    fig = go.Figure(data=data,
-                    layout=go.Layout(
-                        title='Arxiv co-author exploration<br>[Click and drag to form a box to zoom. Double-click to zoom out]',
-                        titlefont_size=16,
-                        showlegend=True,
-                        hovermode='closest',
-                        margin=dict(b=20, l=5, r=5, t=40),
-                        xaxis=dict(showgrid=False,
-                                   zeroline=False,
-                                   showticklabels=False),
-                        yaxis=dict(showgrid=False,
-                                   zeroline=False,
-                                   showticklabels=False)))
+    fig = go.Figure(
+        data=data,
+        layout=go.Layout(
+            title=
+            'Arxiv co-author exploration<br>[Click and drag to form a box to zoom. Double-click to zoom out]',
+            titlefont_size=16,
+            showlegend=True,
+            hovermode='closest',
+            margin=dict(b=20, l=5, r=5, t=40),
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
     fig.show()
+
 
 # TODO - add - on-click functionality
 def on_click():
@@ -236,6 +252,9 @@ def on_click():
     # https://plotly.com/python/click-events/
     # Open arxiv link to the user https://arxiv.org/search/?query=Alexandra+Chouldechova&searchtype=all&source=header
 
-def graph(G, original_name=None, concentric_circle_graphing= False):
+
+def graph(G, original_name=None, concentric_circle_graphing=False):
     #plot_weighted_graph(G)
-    plot_plotly(G, original_name=original_name, concentric_circle_graphing = concentric_circle_graphing)
+    plot_plotly(G,
+                original_name=original_name,
+                concentric_circle_graphing=concentric_circle_graphing)
