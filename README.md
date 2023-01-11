@@ -90,9 +90,9 @@ sub-commands. As of 8/10/20, there is only 1 sub-command `crawl-and-plot` to und
 How to Zoom
 ![How to Zoom](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_how_to_zoom.png)
 Hover
-![Hover](https://github.com/RoyRin/arxiv_connections/blob/master/assets/zoom_and_hover.png)
+![Hover](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_zoom_and_hover.png)
 concentric-view
-![concentric-view](https://github.com/RoyRin/arxiv_connections/blob/master/assets/concentric.png)
+![concentric-view](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_concentric.png)
 
 ## Development
 
