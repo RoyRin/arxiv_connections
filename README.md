@@ -83,10 +83,10 @@ sub-commands. As of 8/10/20, there is only 1 sub-command `crawl-and-plot` to und
 
 ### crawl-and-plot
 
-`arxiv-connector crawl-and-plot 'stuart russel' -m 15 -d 3`
-![arxiv-connector crawl-and-plot 'stuart russel' -m 15 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_big_graph.png)
-`arxiv-connector crawl-and-plot 'stuart russel' -m 7 -d 3`
-![arxiv-connector crawl-and-plot 'stuart russel' -m 7 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_small_graph.png)
+`arxiv-connector crawl-and-plot 'stuart russell' -m 15 -d 3`
+![arxiv-connector crawl-and-plot 'stuart russell' -m 15 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_big_graph.png)
+`arxiv-connector crawl-and-plot 'stuart russell' -m 7 -d 3`
+![arxiv-connector crawl-and-plot 'stuart russell' -m 7 -d 3](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_small_graph.png)
 How to Zoom
 ![How to Zoom](https://github.com/RoyRin/arxiv_connections/blob/master/assets/screenshot_how_to_zoom.png)
 Hover

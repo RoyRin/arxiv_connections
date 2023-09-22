@@ -1,3 +1,4 @@
+SECRETS/
 dist/
 publish.sh
 *.csv
