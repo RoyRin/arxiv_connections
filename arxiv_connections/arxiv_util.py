@@ -12,7 +12,7 @@ logger = logging.getLogger()
 # TODO - be able to create a report on a person, based on their 'proximity' to another academic
 
 
-def discovery_BFS_traversal(root, max_depth, next_traversal_f):
+def discovery_BFS_traversal(root, max_depth, next_traversal_f, max_queries= None):
     """
     Traverse from a root BFS, 
     apply next_traversal_f to get the next set of vertices
@@ -27,8 +27,11 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
     Q.put(root)
     depth = 1
     timeToDepthIncrease = 1
-
+    query_count =0
     while not Q.empty() and depth <= max_depth:
+        query_count+=1
+        if max_queries is not None and query_count > max_queries:
+            break
         v = Q.get()
         timeToDepthIncrease -= 1
         adjacent_vs = next_traversal_f(v, depth)
@@ -43,20 +46,39 @@ def discovery_BFS_traversal(root, max_depth, next_traversal_f):
             timeToDepthIncrease = Q.qsize()
 
 
-def search(search_query, max_search_results=100):
-    logging.debug(f"searching : {search_query}")
-    df = pd.DataFrame(arxiv.query(search_query,
-                                  max_results=max_search_results))
+def search(author, ignore_high_author_count = None, max_search_results=100):
+    logging.debug(f"searching : {author}")
+    auth = author.replace("-", "_")
+    splits = auth.split(" ")
+    if len(splits) ==2:
+        auth = f"{splits[1]}_{splits[0]}"
+    else:
+        auth = splits[-1]
+
+    query = f"au:{auth}"
+    results = arxiv.Search(query, max_results=max_search_results).results()
+    #df = pd.DataFrame(arxiv.query(search_query,
+    #                              max_results=max_search_results))
+    ret =[]
+    for paper in results:
+        if ignore_high_author_count is not None:
+            if len(paper.authors) > ignore_high_author_count:
+                continue
+        paper_authors = [author.name for author in paper.authors]
+        ret.append({"authors": paper_authors, "title": paper.title, "url": paper.pdf_url})
+    df = pd.DataFrame(ret)
     return df
 
 
 def BFS_author_query(original_author,
                      max_search_results=10,
                      halve_queries_by_depth=True,
-                     max_depth=5):
+                     ignore_high_author_count=20,
+                     max_depth=5, max_queries = 30
+                     ):
     """ Traverse the papers by coauthors and return a list of all the articles """
     original_author = original_author.lower()
-
+    query_count = 0
     def next_traversal_vertices(author, depth, all_articles):
         """ 
         return list of things to bump onto the queue, to traversal 1 deeper level
@@ -65,10 +87,15 @@ def BFS_author_query(original_author,
             all_articles = [df.DataFrame], this allows one to update it
         """
         # get arxiv articles for a specific search
+        
+        max_results_ = int(max_search_results * (1 / 2)**(depth - 1)) if halve_queries_by_depth else max_search_results 
+        
+        arxiv_articles = search(author,ignore_high_author_count=ignore_high_author_count, max_search_results=max_results_)
 
-        arxiv_articles = search(author,
-                                max_search_results=int(max_search_results *
-                                                       (1 / 2)**(depth - 1)))
+        
+        #if ignore_many_author_paper:
+            #arxiv_articles = arxiv_articles[arxiv_articles.authors.apply(
+
         # return True if author is a coauthor of article
         is_coauthor = lambda row: any([
             author.lower() == article_author.lower()
@@ -79,8 +106,7 @@ def BFS_author_query(original_author,
                                                                   axis=1)]
 
         # update the master list of articles
-        all_articles[0] = all_articles[0].append(coauthored_articles,
-                                                 ignore_index=True)
+        all_articles[0] = pd.concat([all_articles[0], coauthored_articles])
 
         # get a list of all the coauthors
         unique_coauthors = set()
@@ -100,7 +126,8 @@ def BFS_author_query(original_author,
     discovery_BFS_traversal(
         original_author,
         max_depth=max_depth,
-        next_traversal_f=next_traversal_vertices_partially_applied)
+        next_traversal_f=next_traversal_vertices_partially_applied,
+        max_queries=max_queries)
     return all_articles[0]
 
 
